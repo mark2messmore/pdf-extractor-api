@@ -8,6 +8,7 @@ export default defineConfig({
       '/clean': 'http://localhost:8000',
       '/health': 'http://localhost:8000',
       '/api': 'http://localhost:8000',
+      '/check-password': 'http://localhost:8000',
     }
   },
   build: {

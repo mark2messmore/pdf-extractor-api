@@ -3,6 +3,46 @@ import './style.css'
 // API base URL - empty in production (same origin), localhost in dev
 const API_URL = '';
 
+// Password protection
+const passwordOverlay = document.getElementById('passwordOverlay');
+const passwordInput = document.getElementById('passwordInput');
+const passwordSubmit = document.getElementById('passwordSubmit');
+const passwordError = document.getElementById('passwordError');
+
+// Check if already authenticated
+if (sessionStorage.getItem('authenticated') === 'true') {
+  passwordOverlay.classList.add('hidden');
+}
+
+passwordSubmit.addEventListener('click', checkPassword);
+passwordInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') checkPassword();
+});
+
+async function checkPassword() {
+  const password = passwordInput.value;
+
+  try {
+    const response = await fetch(`${API_URL}/check-password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password })
+    });
+
+    if (response.ok) {
+      sessionStorage.setItem('authenticated', 'true');
+      passwordOverlay.classList.add('hidden');
+    } else {
+      passwordError.hidden = false;
+      passwordInput.value = '';
+      passwordInput.focus();
+    }
+  } catch (err) {
+    passwordError.textContent = 'Connection error';
+    passwordError.hidden = false;
+  }
+}
+
 // DOM Elements
 const dropZone = document.getElementById('dropZone');
 const fileInput = document.getElementById('fileInput');

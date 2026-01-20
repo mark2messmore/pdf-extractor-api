@@ -106,6 +106,15 @@ async def health_check():
     return {"status": "healthy"}
 
 
+@app.post("/check-password")
+async def check_password(data: dict):
+    """Simple password gate check"""
+    site_password = os.getenv("SITE_PASSWORD", "demo123")
+    if data.get("password") == site_password:
+        return {"status": "ok"}
+    raise HTTPException(status_code=401, detail="Incorrect password")
+
+
 @app.post("/extract", response_model=ExtractionResponse)
 async def extract_pdf(file: UploadFile = File(...)):
     """

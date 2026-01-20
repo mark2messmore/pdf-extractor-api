@@ -6,6 +6,17 @@
     <title>PDF Extractor</title>
   </head>
   <body>
+    <!-- Password Gate -->
+    <div class="password-overlay" id="passwordOverlay">
+      <div class="password-modal">
+        <h2>Password Required</h2>
+        <p>Enter password to access PDF Extractor</p>
+        <input type="password" id="passwordInput" placeholder="Enter password" autocomplete="off" />
+        <button class="btn btn-primary" id="passwordSubmit">Enter</button>
+        <p class="password-error" id="passwordError" hidden>Incorrect password</p>
+      </div>
+    </div>
+
     <div class="container">
       <header>
         <h1>PDF Extractor</h1>
