@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PDF Extractor</title>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>PDF Extractor</h1>
+        <p class="subtitle">Extract and clean text from PDFs with AI</p>
+      </header>
+
+      <main>
+        <!-- Upload Section -->
+        <section class="upload-section">
+          <div class="drop-zone" id="dropZone">
+            <div class="drop-zone-content">
+              <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="17 8 12 3 7 8" />
+                <line x1="12" y1="3" x2="12" y2="15" />
+              </svg>
+              <p>Drag & drop a PDF here</p>
+              <span class="or-divider">or</span>
+              <button class="btn btn-secondary" id="browseBtn">Browse Files</button>
+            </div>
+            <input type="file" id="fileInput" accept=".pdf" hidden />
+          </div>
+          <div class="file-info" id="fileInfo" hidden>
+            <span class="file-name" id="fileName"></span>
+            <button class="btn-icon" id="clearFile" title="Remove file">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          </div>
+        </section>
+
+        <!-- Options Section -->
+        <section class="options-section">
+          <div class="option-group">
+            <label for="extractionType">Extraction Type</label>
+            <select id="extractionType">
+              <option value="extract">Raw Extraction</option>
+              <option value="extract-and-clean">Extract + Pattern Clean</option>
+              <option value="extract-with-ai" selected>Extract + AI Clean</option>
+            </select>
+          </div>
+
+          <div class="option-group ai-options" id="aiOptions">
+            <label for="modelSelect">AI Model</label>
+            <select id="modelSelect">
+              <option value="gemini">Gemini 2.0 Flash</option>
+              <option value="sambanova">SambaNova (Llama 3.3 70B)</option>
+              <option value="groq">Groq (Llama 3.3 70B)</option>
+            </select>
+          </div>
+
+          <div class="option-group ai-options" id="promptOptions">
+            <label for="promptPreset">Prompt</label>
+            <select id="promptPreset">
+              <option value="clean">Clean & Format</option>
+              <option value="summarize">Summarize</option>
+              <option value="extract_specs">Extract Specs</option>
+              <option value="custom">Custom Prompt</option>
+            </select>
+          </div>
+
+          <div class="option-group full-width ai-options" id="customPromptGroup" hidden>
+            <label for="customPrompt">Custom Prompt</label>
+            <textarea id="customPrompt" rows="3" placeholder="Enter your custom prompt..."></textarea>
+          </div>
+        </section>
+
+        <!-- Extract Button -->
+        <button class="btn btn-primary btn-large" id="extractBtn" disabled>
+          <span class="btn-text">Extract PDF</span>
+          <span class="btn-loading" hidden>
+            <span class="spinner"></span>
+            Processing...
+          </span>
+        </button>
+
+        <!-- Results Section -->
+        <section class="results-section" id="resultsSection" hidden>
+          <div class="results-header">
+            <h2>Results</h2>
+            <div class="results-meta" id="resultsMeta"></div>
+          </div>
+
+          <div class="results-tabs">
+            <button class="tab active" data-tab="cleaned">AI Cleaned</button>
+            <button class="tab" data-tab="raw">Raw Extraction</button>
+          </div>
+
+          <div class="results-content">
+            <div class="result-panel active" id="cleanedPanel">
+              <div class="panel-actions">
+                <button class="btn btn-sm" id="copyCleaned">Copy</button>
+                <button class="btn btn-sm" id="downloadCleaned">Download</button>
+              </div>
+              <div class="result-text" id="cleanedText"></div>
+            </div>
+            <div class="result-panel" id="rawPanel">
+              <div class="panel-actions">
+                <button class="btn btn-sm" id="copyRaw">Copy</button>
+                <button class="btn btn-sm" id="downloadRaw">Download</button>
+              </div>
+              <div class="result-text" id="rawText"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Error Display -->
+        <div class="error-message" id="errorMessage" hidden></div>
+      </main>
+
+      <footer>
+        <p>API Status: <span class="status-dot" id="statusDot"></span> <span id="statusText">Checking...</span></p>
+      </footer>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
